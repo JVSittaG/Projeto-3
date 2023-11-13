@@ -6,11 +6,14 @@
 void cadastrarTarefa(Tarefa tarefas[], int *qtd) {
   if (*qtd >= 100) {
     printf(
-        "O limite máximo de tarefas foi atingido .\n"); 
+        "O limite máximo de tarefas foi atingido .\n"); // Verifica se a
+                                                        // quantidade limite de
+                                                        // tarefas foi atingida.
     return;
   }
 
-
+  // Se o limite máximo não foi atingido, cadastra a tarefa de acordo com o que
+  // o usuário digitar.
   printf("Descricao Da Tarefa: ");
   scanf(" %s", tarefas[*qtd].descricao);
 
@@ -24,15 +27,16 @@ void cadastrarTarefa(Tarefa tarefas[], int *qtd) {
   scanf(" %s", tarefas[*qtd].status);
   (*qtd)++;
 }
-
+// Função que adiciona a tarefa que o usuário desejar.
 
 void listarTarefas(Tarefa tarefas[], int qtd) {
   if (qtd == 0) {
-    printf("Sem tarefas cadastradas.\n"); 
+    printf("Sem tarefas cadastradas.\n"); // Verifica se há tarefas na lista.
     return;
   }
 
-  
+  // Caso tenha, o laço for percorre a lista de tarefas printando as tarefas
+  // digitadas pelo usuário em ordem.
   printf(" Lista de Tarefas:\n");
   for (int i = 0; i < qtd; i++) {
     printf("Tarefa %d:\n", i + 1);
@@ -43,53 +47,59 @@ void listarTarefas(Tarefa tarefas[], int qtd) {
     printf("\n");
   }
 }
-
+// Função que lista todas as tarefas adicionadas pelo usuário.
 
 void deletarTarefa(Tarefa tarefas[], int *qtd) {
   if (*qtd == 0) {
-    printf("Não há tarefas para deletar.\n"); 
+    printf("Não há tarefas para deletar.\n"); // Verifica se há tarefas na lista
+                                              // tarefas para deletar.
     return;
   }
-  (*qtd)--; 
+  (*qtd)--; // Se houverem tarefas, o programa deleta a última tarefa cadastrada
+            // pelo usuário
   printf("Voce apagou a ultima tarefa cadastrada.\n");
 }
-
+// Função que deleta a última tarefa adicionada pelo usuário.
 
 void salvarTarefas(Tarefa tarefas[], int qtd) {
   FILE *openfile = fopen("tarefas.txt", "wb");
   if (openfile == NULL) {
-    printf("Erro ao abrir.\n"); 
+    printf("Erro ao abrir.\n"); // Caso haja algum erro ao abrir o arquivo, uma
+                                // mensagem de erro é printada.
     return;
   }
 
   fwrite(&qtd, sizeof(int), 1,
-         openfile); 
+         openfile); // Escreve a quantidade de tarefas no arquivo.
 
   fwrite(tarefas, sizeof(Tarefa), qtd,
-         openfile); 
+         openfile); // Escreve o conteúdo de cada tarefa.
 
   fclose(openfile);
 }
 
-
+// Função que salva as tarefas do programa no arquivo
 
 void carregarTarefas(Tarefa tarefas[], int *qtd) {
   FILE *openfile = fopen("tarefas.txt", "rb");
   if (openfile == NULL) {
-    printf("Arquivo nao encontrado.\n"); 
+    printf("Arquivo nao encontrado.\n"); // Caso haja algum erro ao abrir o
+                                         // arquivo, uma mensagem de erro é
+                                         // printada
     return;
   }
 
   fread(qtd, sizeof(int), 1,
-        openfile);
+        openfile); // Lê a quantidade de tarefas no arquivo.
 
   fread(tarefas, sizeof(Tarefa), *qtd,
-        openfile);
+        openfile); // Lê o conteúdo de cada tarefa.
 
   fclose(openfile);
 }
 
-
+// Função que carrega as tarefas do arquivo para o programa, sendo possivel
+// lista-las.
 
 // Projeto 3
 
@@ -99,7 +109,7 @@ void carregarTarefas(Tarefa tarefas[], int *qtd) {
 // PARA COMPARAR NO ARQUIVO PARA ALTERAR
 void alterarTarefa(int prioridade) {
   FILE *arquivo;
-  arquivo = fopen("tarefas.txt", "r+");a
+  arquivo = fopen("tarefas.txt", "r+"); // Abre o arquivo para leitura e escrita
 
   if (arquivo == NULL) {
     printf("Nenhuma tarefa salva.\n");
@@ -147,10 +157,10 @@ void alterarTarefa(int prioridade) {
         break;
       }
 
-     
+      // Mova o cursor de arquivo para o início da linha da tarefa
       fseek(arquivo, -1 * (long)sizeof(tarefa), SEEK_CUR);
 
-    
+      // Sobrescreva a tarefa com as informações atualizadas
       fprintf(arquivo, "%d;%s;%s;%s\n", tarefa.prioridade, tarefa.descricao,
               tarefa.categoria, tarefa.status);
       printf("Tarefa atualizada com sucesso!\n");
@@ -213,4 +223,111 @@ void filtrar_status(char status[]) {
   fclose(arquivo);
 }
 
+// Função para comparar prioridades (usada na ordenação)
+int compararPrioridade(const void *a, const void *b) {
+  return ((Tarefa *)b)->prioridade - ((Tarefa *)a)->prioridade;
+}
 
+// Função para filtrar e ordenar tarefas
+void filtrar_categoria(Tarefa *tarefas, int numeroTarefas,
+                       const char *categoria) {
+  printf("Tarefas na categoria \"%s\", ordenadas por prioridade:\n", categoria);
+
+  // Filtrar tarefas pela categoria
+  for (int i = 0; i < numeroTarefas; i++) {
+    if (strcmp(tarefas[i].categoria, categoria) == 0) {
+      printf("Prioridade: %d, Status: %s ,Descrição: %s\n",
+             tarefas[i].prioridade, tarefas[i].status, tarefas[i].descricao);
+    }
+  }
+
+  // Ordenar tarefas por prioridade (da maior para a menor)
+  qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
+}
+
+void filtrar_categoria_prioriade(Tarefa *tarefas, int numeroTarefas,
+                                 const char *categoriaFiltro,
+                                 int prioridadeFiltro) {
+  printf("Tarefas na categoria \"%s\" com prioridade %d:\n", categoriaFiltro,
+         prioridadeFiltro);
+
+  // Filtrar tarefas pela categoria e prioridade
+  for (int i = 0; i < numeroTarefas; i++) {
+    if (strcmp(tarefas[i].categoria, categoriaFiltro) == 0 &&
+        tarefas[i].prioridade >= prioridadeFiltro) {
+      printf("Status: %s ,Descrição: %s\n", tarefas[i].status,
+             tarefas[i].descricao);
+    }
+  }
+  // Ordenar tarefas por prioridade (da maior para a menor)
+  qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
+}
+
+void exportar_prioridade(Tarefa *tarefas, int numTarefas,
+                         int prioridadeEscolhida) {
+  FILE *arquivo = fopen("tarefas.txt", "w");
+  if (arquivo == NULL) {
+    printf("Não foi possível abrir o arquivo.\n");
+    return;
+  }
+
+  // Escrever as tarefas da prioridade escolhida no arquivo
+  for (int i = 0; i < numTarefas; i++) {
+    if (tarefas[i].prioridade == prioridadeEscolhida) {
+      fprintf(arquivo, "%s, %s, %s\n", tarefas[i].categoria, tarefas[i].status,
+              tarefas[i].descricao);
+    }
+  }
+
+  fclose(arquivo);
+  printf("Tarefas exportadas com sucesso.\n");
+}
+
+void exportar_categoria(Tarefa *tarefas, int numeroTarefas, char *categoria) {
+  // Abrir arquivo para escrita
+  FILE *fp = fopen("tarefas.txt", "w");
+  if (fp == NULL) {
+    printf("Não foi possível abrir o arquivo para escrita\n");
+    return;
+  }
+  // Filtrar tarefas pela categoria
+  for (int i = 0; i < numeroTarefas; i++) {
+    if (strcmp(tarefas[i].categoria, categoria) == 0) {
+      // Escrever tarefa no arquivo
+      fprintf(fp, "Prioridade: %d, Status: %s ,Descrição: %s\n",
+              tarefas[i].prioridade, tarefas[i].status, tarefas[i].descricao);
+    }
+  }
+
+  // Fechar o arquivo
+  fclose(fp);
+
+  // Ordenar tarefas por prioridade (da maior para a menor)
+  qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
+}
+
+void exportar_categoria_prioridade(Tarefa *tarefas, int numeroTarefas,
+                                   const char *categoria, int prioridade) {
+
+  // Abrir arquivo para escrita
+  FILE *fp = fopen("tarefas.txt", "w");
+  if (fp == NULL) {
+    printf("Não foi possível abrir o arquivo para escrita\n");
+    return;
+  }
+
+  // Filtrar tarefas pela categoria e prioridade
+  for (int i = 0; i < numeroTarefas; i++) {
+    if (strcmp(tarefas[i].categoria, categoria) == 0 &&
+        tarefas[i].prioridade == prioridade) {
+      // Escrever tarefa no arquivo
+      fprintf(fp, "Prioridade: %d, Status: %s ,Descrição: %s\n",
+              tarefas[i].prioridade, tarefas[i].status, tarefas[i].descricao);
+    }
+  }
+  // Fechar o arquivo
+  fclose(fp);
+
+  // Ordenar tarefas por prioridade (da maior para a menor)
+  qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
+}
