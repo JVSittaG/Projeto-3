@@ -61,3 +61,48 @@ int main() {
       scanf("%s", statusFiltro);
       filtrar_status(&statusFiltro);
       break;
+    case 9:
+      printf("Digite a categoria para filtrar as tarefas: ");
+      const char categoriaFiltro;
+      scanf("%s", &categoriaFiltro);
+      filtrar_categoria(tarefas, qtd, &categoriaFiltro);
+      break;
+    case 10:
+      printf("Digite a categoria para filtrar as tarefas: ");
+      const char categoriaFiltro2;
+      scanf("%s", categoriaFiltro2);
+      printf("Digite tambem a prioridade prioridade: ");
+      const int prioridadeFiltro2;
+      scanf("%d", prioridadeFiltro2);
+      filtrar_categoria_prioriade(tarefas, qtd, &categoriaFiltro,
+                                  prioridadeFiltro2);
+      break;
+    case 11:
+      printf("Digite a prioridade para exportar as tarefas:");
+      int prioridadeExportar;
+      scanf("%d", prioridadeExportar);
+      exportar_prioridade(tarefas, qtd, prioridadeExportar);
+      break;
+    case 12:
+      printf("Digite a prioridade para exportar as tarefas:");
+      char categoriaExportar;
+      scanf("%s", categoriaExportar);
+      exportar_categoria(tarefas, qtd, categoriaExportar);
+      break;
+    case 13:
+      printf("Digite a prioridade para exportar as tarefas:");
+      char categoriaExportar2;
+      scanf("%s", categoriaExportar2);
+      printf("Digite tambem a prioridade prioridade: ");
+      const int prioridadeExportar2;
+      scanf("%d", prioridadeExportar2);
+      exportar_categoria_prioridade(tarefas, qtd, categoriaExportar2,
+                                    prioridadeExportar2);
+      break;
+    default:
+      printf("Tente outra acao.\n");
+    }
+  } while (opcao != 13);
+
+  return 0;
+}
