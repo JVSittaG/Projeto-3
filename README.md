@@ -1,4 +1,4 @@
-Projeto 3 de C - LIsta de Tarefas parte 2
+Projeto 3 de C - Lista de Tarefas parte 2
 
 João Vitor Sitta Giopatto RA:22.123.054-3
 
