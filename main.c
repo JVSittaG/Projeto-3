@@ -46,8 +46,7 @@ int main() {
       printf("Fechando programa.\n");
       break;
     case 6:
-      printf(
-          "Digite a prioridade da tarefa que deseja alterar: "); // TEM Q MUDAR
+      printf("Digite a prioridade da tarefa que deseja alterar: "); // TEM Q MUDAR
       int prioridadeAlteracao;
       scanf("%d", &prioridadeAlteracao);
       alterarTarefa(prioridadeAlteracao);
@@ -56,48 +55,22 @@ int main() {
       filtrar_prioridade(tarefas);
       break;
     case 8:
-      printf("Digite a status para filtrar as tarefas: ");
-      char statusFiltro;
-      scanf("%s", statusFiltro);
-      filtrar_status(&statusFiltro);
+      filtrar_status(tarefas);
       break;
     case 9:
-      printf("Digite a categoria para filtrar as tarefas: ");
-      const char categoriaFiltro;
-      scanf("%s", &categoriaFiltro);
-      filtrar_categoria(tarefas, qtd, &categoriaFiltro);
+      filtrar_categoria(tarefas, qtd);
       break;
     case 10:
-      printf("Digite a categoria para filtrar as tarefas: ");
-      const char categoriaFiltro2;
-      scanf("%s", categoriaFiltro2);
-      printf("Digite tambem a prioridade prioridade: ");
-      const int prioridadeFiltro2;
-      scanf("%d", prioridadeFiltro2);
-      filtrar_categoria_prioriade(tarefas, qtd, &categoriaFiltro,
-                                  prioridadeFiltro2);
+      filtrar_categoria_prioriade(tarefas, qtd);
       break;
     case 11:
-      printf("Digite a prioridade para exportar as tarefas:");
-      int prioridadeExportar;
-      scanf("%d", prioridadeExportar);
-      exportar_prioridade(tarefas, qtd, prioridadeExportar);
+      exportar_prioridade(tarefas, qtd);
       break;
     case 12:
-      printf("Digite a prioridade para exportar as tarefas:");
-      char categoriaExportar;
-      scanf("%s", categoriaExportar);
-      exportar_categoria(tarefas, qtd, categoriaExportar);
+      exportar_categoria(tarefas, qtd);
       break;
     case 13:
-      printf("Digite a prioridade para exportar as tarefas:");
-      char categoriaExportar2;
-      scanf("%s", categoriaExportar2);
-      printf("Digite tambem a prioridade prioridade: ");
-      const int prioridadeExportar2;
-      scanf("%d", prioridadeExportar2);
-      exportar_categoria_prioridade(tarefas, qtd, categoriaExportar2,
-                                    prioridadeExportar2);
+      exportar_categoria_prioridade(tarefas, qtd);
       break;
     default:
       printf("Tente outra acao.\n");
