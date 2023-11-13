@@ -1,6 +1,5 @@
-#include "projeto.h"
 #include <stdio.h>
-#include <string.h>
+
 // João Vitor Sitta Giopatto RA: 22.123.054-3
 
 int main() {
@@ -46,10 +45,7 @@ int main() {
       printf("Fechando programa.\n");
       break;
     case 6:
-      printf("Digite a prioridade da tarefa que deseja alterar: "); // TEM Q MUDAR
-      int prioridadeAlteracao;
-      scanf("%d", &prioridadeAlteracao);
-      alterarTarefa(prioridadeAlteracao);
+      alterarTarefa(tarefas);
       break;
     case 7:
       filtrar_prioridade(tarefas);
