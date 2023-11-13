@@ -11,9 +11,6 @@ int compararPrioridade(const void *a, const void *b) {
     return ((Tarefa *)b)->prioridade - ((Tarefa *)a)->prioridade;
 }
 
-int compararCategoria(const void *a, const void *b) {
-    return strcmp(((Tarefa *)a)->categoria, ((Tarefa *)b)->categoria);
-}
 
 int compararTarefas(const void *a, const void *b) {
 
