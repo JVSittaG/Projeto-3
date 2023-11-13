@@ -1,7 +1,8 @@
 #include "projeto.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+
 
 void cadastrarTarefa(Tarefa tarefas[], int *qtd) {
   if (*qtd >= 100) {
@@ -105,8 +106,9 @@ void carregarTarefas(Tarefa tarefas[], int *qtd) {
 
 // Função para alterar campos de uma tarefa
 
-// DAR UMA OLHADA COM O PROFESSOR PRA SABER COM QUE PARTE DA STRUCT VC VAI USAR
-// PARA COMPARAR NO ARQUIVO PARA ALTERAR
+
+
+// DAR UMA OLHADA COM O PROFESSOR PRA SABER COM QUE PARTE DA STRUCT VC VAI USAR PARA COMPARAR NO ARQUIVO PARA ALTERAR
 void alterarTarefa(int prioridade) {
   FILE *arquivo;
   arquivo = fopen("tarefas.txt", "r+"); // Abre o arquivo para leitura e escrita
@@ -124,7 +126,7 @@ void alterarTarefa(int prioridade) {
       printf("Prioridade: %d\n", tarefa.prioridade);
       printf("Descrição: %s\n", tarefa.descricao);
       printf("Categoria: %s\n", tarefa.categoria);
-      printf("Estado: %s\n\n", tarefa.status);
+      printf("Estado: %s\n\n",tarefa.status);
 
       int opcao;
       printf("Selecione o campo para alterar:\n");
@@ -184,9 +186,9 @@ void filtrar_prioridade(Tarefa *tarefas) {
   int prioridadeFiltro;
   scanf("%d", &prioridadeFiltro);
   printf("Tarefas com prioridade %d:\n", prioridadeFiltro);
+  
   while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;]\n", &tarefas->prioridade,
-                tarefas->descricao, tarefas->categoria,
-                tarefas->status) != EOF) {
+                tarefas->descricao, tarefas->categoria, tarefas->status) != EOF) {
     if (tarefas->prioridade == prioridadeFiltro) {
       printf("Prioridade: %d\n", tarefas->prioridade);
       printf("Descrição: %s\n", tarefas->descricao);
@@ -197,7 +199,7 @@ void filtrar_prioridade(Tarefa *tarefas) {
   fclose(arquivo);
 }
 
-void filtrar_status(char status[]) {
+void filtrar_status(Tarefa *outra_tarefa) {
   FILE *arquivo;
   arquivo = fopen("tarefas.txt", "r");
 
@@ -206,17 +208,19 @@ void filtrar_status(char status[]) {
     return;
   }
 
-  Tarefa outra_tarefa;
-
-  printf("Tarefas com status %s:\n", outra_tarefa.status);
-  while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;]\n", &outra_tarefa.prioridade,
-                outra_tarefa.descricao, outra_tarefa.categoria,
-                outra_tarefa.status) != EOF) {
-    if (outra_tarefa.status == status) {
-      printf("Prioridade: %d\n", outra_tarefa.prioridade);
-      printf("Descrição: %s\n", outra_tarefa.descricao);
-      printf("Categoria: %s\n", outra_tarefa.categoria);
-      printf("Status: %s\n\n", outra_tarefa.status);
+  printf("Digite a status para filtrar as tarefas: ");
+  char *statusFiltro;
+  scanf("%s", statusFiltro);
+  
+  printf("Tarefas com status %s:\n", outra_tarefa->status);
+  while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;]\n", &outra_tarefa->prioridade,
+                outra_tarefa->descricao, outra_tarefa->categoria,
+                outra_tarefa->status) != EOF) {
+    if (outra_tarefa->status == statusFiltro) {
+      printf("Prioridade: %d\n", outra_tarefa->prioridade);
+      printf("Descrição: %s\n", outra_tarefa->descricao);
+      printf("Categoria: %s\n", outra_tarefa->categoria);
+      printf("Status: %s\n\n", outra_tarefa->status);
     }
   }
 
@@ -225,78 +229,83 @@ void filtrar_status(char status[]) {
 
 // Função para comparar prioridades (usada na ordenação)
 int compararPrioridade(const void *a, const void *b) {
-  return ((Tarefa *)b)->prioridade - ((Tarefa *)a)->prioridade;
+    return ((Tarefa *)b)->prioridade - ((Tarefa *)a)->prioridade;
 }
 
 // Função para filtrar e ordenar tarefas
-void filtrar_categoria(Tarefa *tarefas, int numeroTarefas,
-                       const char *categoria) {
-  printf("Tarefas na categoria \"%s\", ordenadas por prioridade:\n", categoria);
+void filtrar_categoria(Tarefa *tarefas, int numeroTarefas) {
+  printf("Digite a categoria para filtrar as tarefas: ");
+  char *categoriaFiltro;
+  scanf("%s", categoriaFiltro);
+  printf("Tarefas na categoria \"%s\", ordenadas por prioridade:\n", categoriaFiltro);
 
   // Filtrar tarefas pela categoria
   for (int i = 0; i < numeroTarefas; i++) {
-    if (strcmp(tarefas[i].categoria, categoria) == 0) {
-      printf("Prioridade: %d, Status: %s ,Descrição: %s\n",
-             tarefas[i].prioridade, tarefas[i].status, tarefas[i].descricao);
+    if (strcmp(tarefas[i].categoria, categoriaFiltro) == 0) {
+      printf("Prioridade: %d, Status: %s ,Descrição: %s\n", tarefas[i].prioridade,tarefas[i].status ,tarefas[i].descricao);
+        }
     }
-  }
 
   // Ordenar tarefas por prioridade (da maior para a menor)
   qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
 }
 
-void filtrar_categoria_prioriade(Tarefa *tarefas, int numeroTarefas,
-                                 const char *categoriaFiltro,
-                                 int prioridadeFiltro) {
-  printf("Tarefas na categoria \"%s\" com prioridade %d:\n", categoriaFiltro,
-         prioridadeFiltro);
+
+void filtrar_categoria_prioriade(Tarefa *tarefas, int numeroTarefas) {
+  printf("Digite a categoria para filtrar as tarefas: ");
+  char *categoriaFiltro2;
+  scanf("%s", categoriaFiltro2);
+  printf("Digite tambem a prioridade prioridade: ");
+  int *prioridadeFiltro2;
+  scanf("%d", prioridadeFiltro2);
+  printf("Tarefas na categoria \"%s\" com prioridade %d:\n", categoriaFiltro2, *prioridadeFiltro2);
 
   // Filtrar tarefas pela categoria e prioridade
   for (int i = 0; i < numeroTarefas; i++) {
-    if (strcmp(tarefas[i].categoria, categoriaFiltro) == 0 &&
-        tarefas[i].prioridade >= prioridadeFiltro) {
-      printf("Status: %s ,Descrição: %s\n", tarefas[i].status,
-             tarefas[i].descricao);
+    if (strcmp(tarefas[i].categoria, categoriaFiltro2) == 0 && tarefas[i].prioridade >= *prioridadeFiltro2) {
+      printf("Status: %s ,Descrição: %s\n",tarefas[i].status ,tarefas[i].descricao);
+        }
     }
-  }
-  // Ordenar tarefas por prioridade (da maior para a menor)
+    // Ordenar tarefas por prioridade (da maior para a menor)
   qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
+
 }
 
-void exportar_prioridade(Tarefa *tarefas, int numTarefas,
-                         int prioridadeEscolhida) {
+void exportar_prioridade(Tarefa *tarefas, int numTarefas) {
   FILE *arquivo = fopen("tarefas.txt", "w");
   if (arquivo == NULL) {
     printf("Não foi possível abrir o arquivo.\n");
     return;
-  }
-
+    }
+  printf("Digite a prioridade para exportar as tarefas:");
+  int *prioridadeExportar;
+  scanf("%d", prioridadeExportar);
   // Escrever as tarefas da prioridade escolhida no arquivo
   for (int i = 0; i < numTarefas; i++) {
-    if (tarefas[i].prioridade == prioridadeEscolhida) {
-      fprintf(arquivo, "%s, %s, %s\n", tarefas[i].categoria, tarefas[i].status,
-              tarefas[i].descricao);
-    }
+    if (tarefas[i].prioridade == (*prioridadeExportar)) {
+      fprintf(arquivo, "%s, %s, %s\n", tarefas[i].categoria, tarefas[i].status, tarefas[i].descricao);
+      }
   }
-
   fclose(arquivo);
   printf("Tarefas exportadas com sucesso.\n");
 }
 
-void exportar_categoria(Tarefa *tarefas, int numeroTarefas, char *categoria) {
+void exportar_categoria( Tarefa *tarefas, int numeroTarefas) {
   // Abrir arquivo para escrita
   FILE *fp = fopen("tarefas.txt", "w");
   if (fp == NULL) {
     printf("Não foi possível abrir o arquivo para escrita\n");
     return;
-  }
+    }
+  printf("Digite a categoria para exportar as tarefas:");
+  char *categoriaExportar;
+  scanf("%s", categoriaExportar);
   // Filtrar tarefas pela categoria
   for (int i = 0; i < numeroTarefas; i++) {
-    if (strcmp(tarefas[i].categoria, categoria) == 0) {
+    if (strcmp(tarefas[i].categoria, categoriaExportar) == 0) {
       // Escrever tarefa no arquivo
-      fprintf(fp, "Prioridade: %d, Status: %s ,Descrição: %s\n",
-              tarefas[i].prioridade, tarefas[i].status, tarefas[i].descricao);
-    }
+      fprintf(fp, "Prioridade: %d, Status: %s ,Descrição: %s\n", tarefas[i].prioridade,tarefas[i].status ,tarefas[i].descricao);
+      }
   }
 
   // Fechar o arquivo
@@ -306,25 +315,27 @@ void exportar_categoria(Tarefa *tarefas, int numeroTarefas, char *categoria) {
   qsort(tarefas, numeroTarefas, sizeof(Tarefa), compararPrioridades);
 }
 
-void exportar_categoria_prioridade(Tarefa *tarefas, int numeroTarefas,
-                                   const char *categoria, int prioridade) {
+void exportar_categoria_prioridade( Tarefa *tarefas, int numeroTarefas) {
 
   // Abrir arquivo para escrita
   FILE *fp = fopen("tarefas.txt", "w");
   if (fp == NULL) {
     printf("Não foi possível abrir o arquivo para escrita\n");
     return;
-  }
-
+    }
+  printf("Digite a prioridade para exportar as tarefas:");
+  char *categoriaExportar2;
+  scanf("%s", categoriaExportar2);
+  printf("Digite tambem a prioridade prioridade: ");
+  int *prioridadeExportar2;
+  scanf("%d", prioridadeExportar2);
   // Filtrar tarefas pela categoria e prioridade
   for (int i = 0; i < numeroTarefas; i++) {
-    if (strcmp(tarefas[i].categoria, categoria) == 0 &&
-        tarefas[i].prioridade == prioridade) {
+    if (strcmp(tarefas[i].categoria, categoriaExportar2) == 0 && tarefas[i].prioridade == *prioridadeExportar2) {
       // Escrever tarefa no arquivo
-      fprintf(fp, "Prioridade: %d, Status: %s ,Descrição: %s\n",
-              tarefas[i].prioridade, tarefas[i].status, tarefas[i].descricao);
+      fprintf(fp, "Prioridade: %d, Status: %s ,Descrição: %s\n", tarefas[i].prioridade,tarefas[i].status ,tarefas[i].descricao);
+      }
     }
-  }
   // Fechar o arquivo
   fclose(fp);
 
